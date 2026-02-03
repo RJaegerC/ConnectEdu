@@ -1,141 +1,123 @@
-.page {
-  --background: #fafafa;
-  --foreground: #fff;
-
-  --text-primary: #000;
-  --text-secondary: #666;
-
-  --button-primary-hover: #383838;
-  --button-secondary-hover: #f2f2f2;
-  --button-secondary-border: #ebebeb;
-
+/* Container geral */
+.container {
   display: flex;
+  flex-direction: column;
   min-height: 100vh;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+  font-family: "Arial", sans-serif;
+  background-color: #f5f5f5;
+  color: #1a1a1a;
 }
 
+/* Header */
+.header {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.headerImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.header:hover .headerImage {
+  transform: scale(1.05); /* efeito zoom suave */
+}
+
+/* Overlay com título no header */
+.headerOverlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+}
+
+.headerOverlay h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.headerOverlay p {
+  font-size: 1.2rem;
+}
+
+/* Conteúdo central */
 .main {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  max-width: 800px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  background-color: var(--foreground);
-  padding: 120px 60px;
-}
-
-.intro {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  text-align: left;
-  gap: 24px;
-}
-
-.intro h1 {
-  max-width: 320px;
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 48px;
-  letter-spacing: -2.4px;
-  text-wrap: balance;
-  color: var(--text-primary);
-}
-
-.intro p {
-  max-width: 440px;
-  font-size: 18px;
-  line-height: 32px;
-  text-wrap: balance;
-  color: var(--text-secondary);
-}
-
-.intro a {
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.ctas {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  max-width: 440px;
-  gap: 16px;
-  font-size: 14px;
-}
-
-.ctas a {
-  display: flex;
   justify-content: center;
   align-items: center;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 128px;
-  border: 1px solid transparent;
-  transition: 0.2s;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.main h2 {
+  font-size: 2rem;
+  color: #3b6e18;
+}
+
+.main p {
+  font-size: 1.1rem;
+  max-width: 600px;
+  text-align: center;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* Botão moderno */
+.button {
+  padding: 1rem 2.5rem;
+  background: linear-gradient(145deg, #46b24a, #3a9037);
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-size: 1.1rem;
   cursor: pointer;
-  width: fit-content;
-  font-weight: 500;
+  box-shadow: 4px 4px 8px #2e6d29, -4px -4px 8px #5fc25b; /* efeito 3D */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-a.primary {
-  background: var(--text-primary);
-  color: var(--background);
-  gap: 8px;
+.button:hover {
+  transform: translateY(-3px);
+  box-shadow: 6px 6px 10px #2e6d29, -6px -6px 10px #5fc25b;
 }
 
-a.secondary {
-  border-color: var(--button-secondary-border);
+/* Footer */
+.footer {
+  padding: 1rem;
+  background-color: #3b6e18;
+  color: white;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-  a.primary:hover {
-    background: var(--button-primary-hover);
-    border-color: transparent;
-  }
-
-  a.secondary:hover {
-    background: var(--button-secondary-hover);
-    border-color: transparent;
-  }
-}
-
+/* Responsivo */
 @media (max-width: 600px) {
-  .main {
-    padding: 48px 24px;
+  .headerOverlay h1 {
+    font-size: 1.8rem;
   }
 
-  .intro {
-    gap: 16px;
+  .headerOverlay p {
+    font-size: 1rem;
   }
 
-  .intro h1 {
-    font-size: 32px;
-    line-height: 40px;
-    letter-spacing: -1.92px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .logo {
-    filter: invert();
+  .main h2 {
+    font-size: 1.5rem;
   }
 
-  .page {
-    --background: #000;
-    --foreground: #000;
-
-    --text-primary: #ededed;
-    --text-secondary: #999;
-
-    --button-primary-hover: #ccc;
-    --button-secondary-hover: #1a1a1a;
-    --button-secondary-border: #1a1a1a;
+  .button {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
   }
 }
