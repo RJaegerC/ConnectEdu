@@ -4,7 +4,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-image: url("/biblioteca.jpg"); /* Substitua pela sua imagem */
+  background-image: url("/biblioteca.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -13,21 +13,20 @@
 
 /* Caixa de login */
 .loginBox {
-  background: linear-gradient(145deg, #639e39, #4e7a2c); /* leve gradiente */
+  background: linear-gradient(145deg, #639e39, #4e7a2c); 
   padding: 2.5rem 3rem;
   border-radius: 16px;
   box-shadow: 
-    0 8px 24px rgba(0, 0, 0, 0.6), /* sombra principal */
-    inset 0 -4px 8px rgba(255, 255, 255, 0.1); /* leve relevo interno */
+    0 8px 24px rgba(0, 0, 0, 0.6), 
+    inset 0 -4px 8px rgba(255, 255, 255, 0.1); 
   width: 90%;
   max-width: 400px;
   text-align: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Pequena interação 3D quando passa o mouse */
 .loginBox:hover {
-  transform: translateY(-5px) scale(1.02); /* levanta e aumenta sutilmente */
+  transform: translateY(-5px) scale(1.02); 
   box-shadow: 
     0 12px 32px rgba(0, 0, 0, 0.7),
     inset 0 -4px 8px rgba(255, 255, 255, 0.15);
@@ -41,14 +40,12 @@
   color: #ffffff;
 }
 
-/* Formulário */
 .form {
   display: flex;
   flex-direction: column;
   gap: 1rem;
 }
 
-/* Cada campo */
 .formField {
   position: relative;
   display: flex;
@@ -57,7 +54,6 @@
   margin-bottom: 1rem;
 }
 
-/* Aplica apenas aos campos de input */
 .inputField {
   position: relative;
   display: flex;
@@ -77,7 +73,7 @@
 
 .input {
   flex: 1;
-  padding: 0.8rem 1rem 0.8rem 50px; /* espaço para ícone e linha */
+  padding: 0.8rem 1rem 0.8rem 50px; 
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 1rem;
@@ -89,7 +85,7 @@
 .inputField::before {
   content: "";
   position: absolute;
-  left: 40px; /* perto do ícone */
+  left: 40px;
   top: 50%;
   transform: translateY(-50%);
   width: 1px;
@@ -98,12 +94,11 @@
   pointer-events: none;
 }
 
-/* Centralizar botão */
+/* Centralizando botão */
 .formField:last-child {
   justify-content: center;
 }
 
-/* Botão verde */
 .button {
   padding: 1rem;
   background: linear-gradient(145deg, #46b24a, #3a9037);
@@ -121,8 +116,6 @@
   box-shadow: 4px 4px 8px #2e6d29, -4px -4px 8px #5fc25b;
 }
 
-
-/* Link pequeno */
 .small {
   margin-top: 0.5rem;
   font-size: 0.85rem;
@@ -137,7 +130,7 @@
   text-decoration: underline;
 }
 
-/* Animação fadeInDown */
+/* Responsivo */
 @keyframes fadeInDown {
   0% {
     opacity: 0;
@@ -153,7 +146,6 @@
   animation: fadeInDown 0.8s ease forwards;
 }
 
-/* Responsivo */
 @media (max-width: 500px) {
   .loginBox {
     padding: 2rem;

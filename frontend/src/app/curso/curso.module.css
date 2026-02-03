@@ -1,0 +1,202 @@
+.container {
+  min-height: 100vh;
+  background-color: #f4f6f4;
+  font-family: Arial, sans-serif;
+}
+
+.banner {
+  background: linear-gradient(145deg, #639e39, #4e7a2c);
+  color: white;
+  padding: 2rem;
+}
+
+.banner h1 {
+  font-size: 2rem;
+  margin-bottom: 0.3rem;
+}
+
+.progress {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.bar {
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-top: 0.4rem;
+}
+
+.fill {
+  width: 35%;
+  height: 100%;
+  background-color: #ffffff;
+}
+
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  background-color: white;
+  padding: 1rem;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.tabs button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding-bottom: 0.3rem;
+  color: #666;
+}
+
+.active {
+  border-bottom: 3px solid #639e39;
+  color: #3b6e18;
+  font-weight: bold;
+}
+
+.main {
+  padding: 2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Lista de aulas */
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.list li {
+  background-color: white;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  border-left: 5px solid #639e39;
+  display: flex;
+  flex-direction: column;
+}
+
+.list li span {
+  font-weight: bold;
+  color: #333;
+}
+
+.list li small {
+  color: #666;
+  margin-top: 0.2rem;
+}
+
+.activity {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+.activityHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.deadline {
+  font-size: 0.85rem;
+  color: #999;
+}
+
+.activity p {
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+/* Container da paginação */
+.activityPagination {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; 
+}
+
+.paginationButtons {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  gap: 0.5rem; 
+  margin-top: 1.5rem;
+  flex-wrap: wrap; 
+  font-weight: bold;
+}
+
+.paginationButtons span {
+  color: #222; 
+  font-weight: bold;
+}
+
+.pageBtn {
+  padding: 0.5rem 0.8rem;
+  background-color: #639e39;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.pageBtn:hover:not(:disabled) {
+  background-color: #4e7a2c;
+}
+
+.pageBtn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.paginationButtons .active {
+  background-color: #3b6e18;
+  font-weight: bold;
+}
+
+.upload {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.upload input[type="file"] {
+  flex: 1;
+  padding: 0.6rem;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  background-color: #fafafa;
+}
+
+/* Botão de enviar atvd*/
+.send {
+  padding: 0.7rem 1.5rem;
+  background-color: #639e39;
+  border: none;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.send:hover {
+  background-color: #4e7a2c;
+}
+
+/* Avisos */
+.notice {
+  text-align: center;
+  font-size: 1.1rem;
+  color: #666;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 10px;
+}

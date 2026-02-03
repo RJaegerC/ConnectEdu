@@ -1,0 +1,159 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f4;
+}
+
+.header {
+  height: 70px;
+  background: linear-gradient(145deg, #639e39, #4e7a2c);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  color: white;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.logo {
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.profileArea {
+  position: relative;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid white;
+}
+
+.dropdown {
+  position: absolute;
+  top: 55px;
+  left: 0;
+  background-color: #ffffff;
+  color: #333;
+  border-radius: 10px;
+  padding: 0.4rem 0;
+  min-width: 190px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+  z-index: 20;
+  overflow: hidden;
+}
+
+/* Faixa verde no topo */
+.dropdown::before {
+  content: "";
+  display: block;
+  height: 6px;
+  background: linear-gradient(90deg, #639e39, #4e7a2c);
+}
+
+.dropdown span,
+.dropdown a,
+.dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 1rem;
+  background: none;
+  border: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  font-size: 0.95rem;
+  color: #2f2f2f;
+  text-decoration: none;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown span:hover,
+.dropdown a:hover,
+.dropdown button:hover {
+  background-color: #f1f7ec;
+  color: #3b6e18;
+}
+
+.notifications {
+  position: relative;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+/* Caixa de notificação */
+.notifBox {
+  position: absolute;
+  top: 45px;
+  right: 0;
+  background-color: white;
+  color: #333;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  font-size: 0.9rem;
+  white-space: nowrap;
+  z-index: 20;
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+  text-align: center;
+}
+
+.main h2 {
+  margin-bottom: 2rem;
+  color: #3b6e18;
+}
+
+/* Grid de cursos */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* Card do curso */
+.card {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.card span {
+  display: block;
+  padding: 1rem;
+  font-weight: bold;
+}
+
+.card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.footer {
+  padding: 1rem;
+  background-color: #3b6e18;
+  color: white;
+  text-align: center;
+  font-size: 0.9rem;
+}

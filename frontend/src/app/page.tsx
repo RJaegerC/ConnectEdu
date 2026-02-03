@@ -6,7 +6,6 @@ import styles from "./page.module.css";
 export default function HomePage() {
   return (
     <div className={styles.container}>
-      {/* Header com imagem e overlay */}
       <header className={styles.header}>
         <img
           src="connecteduimg.png"
@@ -30,7 +29,6 @@ export default function HomePage() {
         </Link>
       </main>
 
-      {/* Footer */}
       <footer className={styles.footer}>
         © 2026 ConnectEdu - Todos os direitos reservados.
       </footer>
