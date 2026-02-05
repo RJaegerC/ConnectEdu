@@ -1,50 +1,52 @@
 "use client";
 
-import { useState } from "react";
-import styles from "./curso.module.css";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import styles from "../curso.module.css"; 
+import { getUserCursoById } from "../curso.api"; 
 
-export default function CursoPage() {
+interface Atividade {
+  id: string;
+  titulo: string;
+  descricao: string;
+  dataentrega: string | null;
+}
+
+interface Curso {
+  id: string;
+  nome: string;
+  professorNome: string;
+  atividades: Atividade[];
+}
+
+export default function UserCursoPage({ params }: { params: { id: string } }) {
+  const router = useRouter();
+  const { id } = params;
+  const [curso, setCurso] = useState<Curso | null>(null);
   const [tab, setTab] = useState("atividades");
   const [currentPage, setCurrentPage] = useState(1);
-  const activitiesPerPage = 3; 
+  const activitiesPerPage = 3;
+  const [loading, setLoading] = useState(true);
 
-  const activities = [
-    {
-      title: "Atividade 1 – Página HTML",
-      deadline: "Entrega até 20/03",
-      description:
-        "Crie uma página HTML simples utilizando os conceitos vistos em aula e envie um PDF contendo o código e a explicação.",
-    },
-    {
-      title: "Atividade 2 – Estilizando com CSS",
-      deadline: "Entrega até 27/03",
-      description:
-        "Crie um layout básico de página HTML e aplique estilos CSS para cores, fontes e posicionamento. Envie um PDF com código e explicação.",
-    },
-    {
-      title: "Atividade 3 – JavaScript Interativo",
-      deadline: "Entrega até 03/04",
-      description:
-        "Adicione interatividade à página HTML usando JavaScript (ex: alert, manipulação do DOM) e envie PDF com explicação.",
-    },
-    {
-      title: "Atividade 4 – Formulário HTML",
-      deadline: "Entrega até 10/04",
-      description:
-        "Crie um formulário com inputs, selects e validação simples. Envie PDF com código e explicação.",
-    },
-    {
-      title: "Atividade 5 – Projeto Final",
-      deadline: "Entrega até 17/04",
-      description:
-        "Combine HTML, CSS e JS para criar uma pequena aplicação web. Envie PDF com código e explicação.",
-    },
-  ];
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
 
-  const totalPages = Math.ceil(activities.length / activitiesPerPage);
+    getUserCursoById(id, token)
+      .then((data) => setCurso(data))
+      .catch(() => router.push("/perfil"))
+      .finally(() => setLoading(false));
+  }, [id, router]);
 
+  if (loading) return <p>Carregando curso...</p>;
+  if (!curso) return <p>Curso não encontrado.</p>;
+
+  const totalPages = Math.ceil(curso.atividades.length / activitiesPerPage);
   const startIndex = (currentPage - 1) * activitiesPerPage;
-  const currentActivities = activities.slice(
+  const currentActivities = curso.atividades.slice(
     startIndex,
     startIndex + activitiesPerPage
   );
@@ -56,8 +58,8 @@ export default function CursoPage() {
   return (
     <div className={styles.container}>
       <section className={styles.banner}>
-        <h1>Desenvolvimento Web</h1>
-        <p>Professor: João Silva</p>
+        <h1>{curso.nome}</h1>
+        <p>Professor: {curso.professorNome}</p>
 
         <div className={styles.progress}>
           <span>Progresso do curso</span>
@@ -91,30 +93,28 @@ export default function CursoPage() {
       <main className={styles.main}>
         {tab === "conteudo" && (
           <ul className={styles.list}>
-            <li>
-              <span>📘 Aula 1</span>
-              <small>Introdução</small>
-            </li>
-            <li>
-              <span>📘 Aula 2</span>
-              <small>HTML & CSS</small>
-            </li>
-            <li>
-              <span>📘 Aula 3</span>
-              <small>JavaScript</small>
-            </li>
+            {curso.atividades.map((a, i) => (
+              <li key={a.id}>
+                <span>📘 Atividade {i + 1}</span>
+                <small>{a.titulo}</small>
+              </li>
+            ))}
           </ul>
         )}
 
         {tab === "atividades" && (
           <div className={styles.activityPagination}>
-            {currentActivities.map((act, idx) => (
-              <div key={idx} className={styles.activity}>
+            {currentActivities.map((act) => (
+              <div key={act.id} className={styles.activity}>
                 <header className={styles.activityHeader}>
-                  <h3>{act.title}</h3>
-                  <span className={styles.deadline}>{act.deadline}</span>
+                  <h3>{act.titulo}</h3>
+                  <span className={styles.deadline}>
+                    {act.dataentrega
+                      ? `Entrega até ${new Date(act.dataentrega).toLocaleDateString()}`
+                      : "Sem prazo definido"}
+                  </span>
                 </header>
-                <p>{act.description}</p>
+                <p>{act.descricao}</p>
                 <div className={styles.upload}>
                   <input type="file" accept=".pdf" />
                   <button className={styles.send}>Enviar atividade</button>
@@ -155,9 +155,7 @@ export default function CursoPage() {
         )}
 
         {tab === "avisos" && (
-          <div className={styles.notice}>
-            📢 Nenhum aviso no momento.
-          </div>
+          <div className={styles.notice}>📢 Nenhum aviso no momento.</div>
         )}
       </main>
     </div>

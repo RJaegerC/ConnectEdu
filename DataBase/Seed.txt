@@ -1,0 +1,48 @@
+INSERT INTO usuario (nome, email, senha, "role")
+VALUES
+    ('Adminzero', 'adminzero@sistema.com', '$2b$10$WoSn0dUydJ1HmB65uGLPKOr/JKkGeMqtAnrTHk.mSy7V2QJvfhj2K', 'admin'),
+    ('Paulo', 'paulo@escola.com', '$2b$10$/k9H0Q84kuu0T6F5Q6joW.3JJco9tgkX14VZ72xfqjZKjvl/aATie', 'professor'),
+    ('Carlos Henrique', 'professor1@escola.com', '$2b$10$a.73ujBFhg7xYOmrB5gK0u16JJujk.Zh6dWVMdJuVQlbPjx2aD7ye', 'professor'),
+    ('Roberto Lima', 'professor2@escola.com', '$2b$10$nlfg14HK5gx43j4otOAXY.ulRE9KGAR5RfhVg5Hs0GiYcAXbebTHa', 'professor'),
+    ('Fernanda Duarte', 'professor3@escola.com', '$2b$10$mwEr81ap6HQGgbVCu8RvDuE5pYhuxllGRjqI4j1vW2MZa8ZX8b.RS', 'professor'),
+    ('Thiago Moreira', 'professor4@escola.com', '$2b$10$0jXGcV0KK/zcus1HDOZbSeMcTBm.rngo6K7qomRd1OeuD9Px77psC', 'professor'),
+    ('Marcelo', 'marcelo@aluno.com', '$2b$10$KjcEMQ2KSao0.NQYolr4Qeo.ZwvlHHEu12y9j7VknZ8NRFnBvxw5y', 'aluno'),
+    ('Lucas Andrade', 'aluno1@escola.com', '$2b$10$nwPtLtgx4Me3FKwBX2TtuOJywmmg8u0U1cWHp.piWUOQWJkJEWZ9q', 'aluno'),
+    ('Beatriz Costa', 'aluno2@escola.com', '$2b$10$YWLEXEKMnvkhsdXPui.Mzuu.4WV0k7U0EeUHjG6sW16O/mLJcWfSy', 'aluno'),
+    ('Rafael Souza', 'aluno3@escola.com', '$2b$10$inmp.Vn9T9yqVuNczhqaBOGr/.MPMa53WfKHg7vzQwIF8KO.ws7m2', 'aluno'),
+    ('Camila Fernandes', 'aluno4@escola.com', '$2b$10$m0m1slLwoGZmnYoA/EWr7e1vjniAUF52xs660FexACl9g4JcMfA3i', 'aluno');
+
+
+INSERT INTO curso (nome, descricao, professor_id)
+VALUES
+    ('Introdução a programação', 'Curso de lógica de programação para ensino médio.',
+        (SELECT id FROM usuario WHERE nome = 'Paulo')),
+    ('Banco de Dados', 'Curso introdutorio de SQL.',
+        (SELECT id FROM usuario WHERE nome = 'Carlos Henrique')),
+    ('Desenvolvimento Web', 'Curso de desenvolvimento web.',
+        (SELECT id FROM usuario WHERE nome = 'Roberto Lima'));
+
+
+-- Introdução a programação
+INSERT INTO user_curso (user_id, curso_id)
+VALUES
+    ((SELECT id FROM usuario WHERE nome = 'Marcelo'), (SELECT id FROM curso WHERE nome = 'Introdução a programação')),
+    ((SELECT id FROM usuario WHERE nome = 'Lucas Andrade'), (SELECT id FROM curso WHERE nome = 'Introdução a programação')),
+    ((SELECT id FROM usuario WHERE nome = 'Beatriz Costa'), (SELECT id FROM curso WHERE nome = 'Introdução a programação'));
+
+-- Banco de Dados
+INSERT INTO user_curso (user_id, curso_id)
+VALUES
+    ((SELECT id FROM usuario WHERE nome = 'Rafael Souza'), (SELECT id FROM curso WHERE nome = 'Banco de Dados')),
+    ((SELECT id FROM usuario WHERE nome = 'Camila Fernandes'), (SELECT id FROM curso WHERE nome = 'Banco de Dados')),
+    ((SELECT id FROM usuario WHERE nome = 'Marcelo'), (SELECT id FROM curso WHERE nome = 'Banco de Dados'));
+
+-- Desenvolvimento Web
+INSERT INTO user_curso (user_id, curso_id)
+VALUES
+    ((SELECT id FROM usuario WHERE nome = 'Lucas Andrade'), (SELECT id FROM curso WHERE nome = 'Desenvolvimento Web')),
+    ((SELECT id FROM usuario WHERE nome = 'Beatriz Costa'), (SELECT id FROM curso WHERE nome = 'Desenvolvimento Web')),
+    ((SELECT id FROM usuario WHERE nome = 'Rafael Souza'), (SELECT id FROM curso WHERE nome = 'Desenvolvimento Web'));
+
+
+

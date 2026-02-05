@@ -1,0 +1,154 @@
+-- DROP SCHEMA public;
+
+CREATE SCHEMA public AUTHORIZATION pg_database_owner;
+
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- DROP TYPE public.role_type;
+
+CREATE TYPE public.role_type AS ENUM (
+	'aluno',
+	'professor',
+	'admin'
+);
+
+-- ======================
+-- Tabela: usuario
+-- ======================
+
+CREATE TABLE usuario (
+	id uuid DEFAULT uuid_generate_v4() NOT NULL,
+	nome varchar(250) NOT NULL,
+	email varchar(250) NOT NULL,
+	senha varchar(250) NOT NULL,
+	"role" public.role_type DEFAULT 'aluno'::role_type NOT NULL,
+	CONSTRAINT usuario_pk PRIMARY KEY (id),
+	CONSTRAINT usuario_unique_email UNIQUE (email)
+);
+
+-- ======================
+-- Tabela: curso
+-- ======================
+
+CREATE TABLE curso (
+	id uuid DEFAULT uuid_generate_v4() NOT NULL,
+	nome varchar(250) NOT NULL,
+	descricao text NULL,
+	professor_id uuid NULL,
+	CONSTRAINT curso_pk PRIMARY KEY (id),
+	CONSTRAINT curso_usuario_fk FOREIGN KEY (professor_id) REFERENCES usuario(id)
+);
+
+-- ======================
+-- Tabela: user_curso (N:N)
+-- ======================
+
+CREATE TABLE user_curso (
+	user_id uuid NOT NULL,
+	curso_id uuid NOT NULL,
+	CONSTRAINT user_curso_pk PRIMARY KEY (user_id, curso_id),
+	CONSTRAINT user_curso_curso_fk FOREIGN KEY (curso_id)
+		REFERENCES curso(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE,
+	CONSTRAINT user_curso_usuario_fk FOREIGN KEY (user_id)
+		REFERENCES usuario(id)
+		ON DELETE CASCADE
+		ON UPDATE CASCADE
+);
+
+-- ======================
+-- Tabela: atividade
+-- ======================
+
+CREATE TABLE atividade (
+	id uuid DEFAULT uuid_generate_v4() NOT NULL,
+	arquivo varchar(500) NULL,
+	titulo varchar(250) NULL,
+	descricao text NULL,
+	dataentrega timestamp NULL,
+	curso_id uuid NULL,
+	CONSTRAINT atividade_pk PRIMARY KEY (id),
+	CONSTRAINT atividade_curso_fk FOREIGN KEY (curso_id)
+		REFERENCES curso(id)
+		ON DELETE CASCADE
+);
+
+-- ======================
+-- Tabela: entrega
+-- ======================
+
+CREATE TABLE entrega (
+	id uuid DEFAULT uuid_generate_v4() NOT NULL,
+	arquivoresp varchar(500) NULL,
+	nota numeric(5,2) NULL,
+	atividade_id uuid NULL,
+	aluno_id uuid NULL,
+	CONSTRAINT entrega_pk PRIMARY KEY (id),
+	CONSTRAINT entrega_atividade_fk FOREIGN KEY (atividade_id)
+		REFERENCES atividade(id)
+		ON DELETE CASCADE,
+	CONSTRAINT entrega_usuario_fk FOREIGN KEY (aluno_id)
+		REFERENCES usuario(id)
+);
+
+-- Funções uuid-ossp (mantidas)
+CREATE OR REPLACE FUNCTION public.uuid_generate_v1()
+ RETURNS uuid
+ LANGUAGE c
+ PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_generate_v1$function$;
+
+CREATE OR REPLACE FUNCTION public.uuid_generate_v1mc()
+ RETURNS uuid
+ LANGUAGE c
+ PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_generate_v1mc$function$;
+
+CREATE OR REPLACE FUNCTION public.uuid_generate_v3(namespace uuid, name text)
+ RETURNS uuid
+ LANGUAGE c
+ IMMUTABLE PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_generate_v3$function$;
+
+CREATE OR REPLACE FUNCTION public.uuid_generate_v4()
+ RETURNS uuid
+ LANGUAGE c
+ PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_generate_v4$function$;
+
+CREATE OR REPLACE FUNCTION public.uuid_generate_v5(namespace uuid, name text)
+ RETURNS uuid
+ LANGUAGE c
+ IMMUTABLE PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_generate_v5$function$;
+
+CREATE OR REPLACE FUNCTION public.uuid_nil()
+ RETURNS uuid
+ LANGUAGE c
+ IMMUTABLE PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_nil$function$;
+
+CREATE OR REPLACE FUNCTION public.uuid_ns_dns()
+ RETURNS uuid
+ LANGUAGE c
+ IMMUTABLE PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_ns_dns$function$;
+
+CREATE OR REPLACE FUNCTION public.uuid_ns_oid()
+ RETURNS uuid
+ LANGUAGE c
+ IMMUTABLE PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_ns_oid$function$;
+
+CREATE OR REPLACE FUNCTION public.uuid_ns_url()
+ RETURNS uuid
+ LANGUAGE c
+ IMMUTABLE PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_ns_url$function$;
+
+CREATE OR REPLACE FUNCTION public.uuid_ns_x500()
+ RETURNS uuid
+ LANGUAGE c
+ IMMUTABLE PARALLEL SAFE STRICT
+AS '$libdir/uuid-ossp', $function$uuid_ns_x500$function$;
