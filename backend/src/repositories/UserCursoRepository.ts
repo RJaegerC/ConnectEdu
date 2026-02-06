@@ -21,7 +21,7 @@ export class UserCursoRepository {
   findByUser(usuarioId: string) {
     return this.repo.find({
       where: { usuarioId },
-      relations: ['curso'],
+      relations: ['curso', 'curso.professor', 'curso.atividades'],
     });
   }
 
@@ -29,6 +29,13 @@ export class UserCursoRepository {
     return this.repo.find({
       where: { cursoId },
       relations: ['usuario'],
+    });
+  }
+
+  async findOneByUserCurso(usuarioId: string, cursoId: string) {
+    return this.repo.findOne({
+      where: { usuarioId, cursoId },
+      relations: ['curso', 'curso.professor', 'curso.atividades'],
     });
   }
 }

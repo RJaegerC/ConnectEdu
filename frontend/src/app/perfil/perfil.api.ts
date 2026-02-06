@@ -22,3 +22,13 @@ export async function getUserCursos(token: string) {
   return res.json();
 }
 
+export async function getCursoDetalhes(token: string, cursoId: string) {
+  const res = await fetch(`${API_URL}/user-curso/${cursoId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) throw new Error("Não autorizado ao curso");
+  return res.json();
+}

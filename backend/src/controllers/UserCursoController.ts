@@ -2,14 +2,14 @@ import { Controller, Get, Param, Post, Delete, UseGuards, Request } from '@nestj
 import { UserCursoService } from '../services/UserCursoService';
 import { JwtAuthGuard } from '../guards/Jwt.Auth.Guard';
 
-@UseGuards(JwtAuthGuard) 
+@UseGuards(JwtAuthGuard)
 @Controller('user-curso')
 export class UserCursoController {
   constructor(private readonly userCursoService: UserCursoService) {}
 
   @Get()
   async listarCursos(@Request() req) {
-    const usuarioId = req.user.sub; 
+    const usuarioId = req.user.sub;
     return this.userCursoService.listarCursosDoUsuario(usuarioId);
   }
 
