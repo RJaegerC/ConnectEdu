@@ -17,7 +17,7 @@ import { UserCurso } from '../models/UserCurso';
       password: process.env.POSTGRES_PASSWORD || '1234567',
       database: process.env.POSTGRES_DB || 'educdb',
       entities: [Usuario, Curso, Atividade, Entrega, UserCurso],
-      synchronize: false, // cuidado: true só para primeiro uso
+      synchronize: true, // cuidado: true só para primeiro uso
     }),
   ],
 })
