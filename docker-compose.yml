@@ -1,0 +1,109 @@
+services:
+  # ====================================================================
+  # POSTGRES
+  # ====================================================================
+  postgres:
+    image: postgres:14-alpine
+    container_name: educ-postgresql
+    environment:
+      POSTGRES_DB: educdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234567
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - educ-network
+
+  # ====================================================================
+  # PGADMIN
+  # ====================================================================
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: educ-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: educ@example.com
+      PGADMIN_DEFAULT_PASSWORD: 1234567
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    networks:
+      - educ-network
+
+  # ====================================================================
+  # BACKEND - NESTJS
+  # ====================================================================
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: educ-backend
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: 1234567
+      DATABASE_NAME: educdb
+      JWT_SECRET: minha_chave_secreta
+    expose:
+      - "3000"
+    depends_on:
+      - postgres
+    networks:
+      - educ-network
+
+  # ====================================================================
+  # FRONTEND - NEXT.JS
+  # ====================================================================
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: educ-frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080
+    expose:
+      - "5173"
+    networks:
+      - educ-network
+
+  # ====================================================================
+  # NGINX
+  # ====================================================================
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: educ-nginx
+    ports:
+      - "8080:8080"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - educ-network
+
+  # ====================================================================
+  # UPTIME-KUMA
+  # ====================================================================
+  uptime-kuma:
+    image: louislam/uptime-kuma:1
+    container_name: educ-uptime-kuma
+    restart: unless-stopped
+    ports:
+      - "3001:3001"   
+    volumes:
+      - uptime-kuma-data:/app/data
+    networks:
+      - educ-network
+
+volumes:
+  pgdata:
+  pgadmindata:
+  uptime-kuma-data:
+
+networks:
+  educ-network:
+    driver: bridge
