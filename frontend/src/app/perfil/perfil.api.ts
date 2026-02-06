@@ -2,7 +2,9 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL!;
 
 export async function getPerfil(token: string) {
   const res = await fetch(`${API_URL}/usuario/perfil`, {
-    headers: { Authorization: `Bearer ${token}` },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   if (!res.ok) throw new Error("Não autorizado");
@@ -10,10 +12,13 @@ export async function getPerfil(token: string) {
 }
 
 export async function getUserCursos(token: string) {
-  const res = await fetch(`${API_URL.replace('/usuario', '')}/user-curso`, {
-    headers: { Authorization: `Bearer ${token}` },
+  const res = await fetch(`${API_URL}/user-curso`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   if (!res.ok) throw new Error("Não foi possível carregar os cursos");
   return res.json();
 }
+

@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL + "/usuario";
+const API_URL = process.env.NEXT_PUBLIC_API_URL! + "/usuario";
 
 export async function login(email: string, senha: string) {
   const res = await fetch(`${API_URL}/login`, {

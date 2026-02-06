@@ -20,21 +20,22 @@ export default function PerfilPage() {
   }
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/login");
-      return;
-    }
+  const token = localStorage.getItem("token");
+  if (!token) {
+    router.push("/login");
+    return;
+  }
 
-    // Puxa perfil e cursos em paralelo
-    Promise.all([getPerfil(token), getUserCursos(token)])
-      .then(([perfil, cursosData]) => {
-        setUsuario({ nome: perfil.nome, email: perfil.email });
-        setCursos(cursosData); // cursosData utilizando UserCursoController
-      })
-      .catch(() => router.push("/login"))
-      .finally(() => setLoading(false));
-  }, [router]);
+  getPerfil(token)
+    .then((perfil) => {
+      setUsuario(perfil);
+      return getUserCursos(token);
+    })
+    .then(setCursos)
+    .catch(() => router.push("/login"))
+    .finally(() => setLoading(false));
+}, []);
+
 
   if (loading) return <p>Carregando...</p>;
 
