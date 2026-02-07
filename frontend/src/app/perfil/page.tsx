@@ -19,20 +19,16 @@ export default function PerfilPage() {
   }
 
   async function entrarCurso(cursoId: string) {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/login");
-      return;
-    }
+  console.log("CURSO CLICADO:", cursoId);
 
-    try {
-      const curso = await getCursoDetalhes(token, cursoId);
-      router.push(`/user-curso/${cursoId}`);
-    } catch (err) {
-      console.error("Erro ao acessar curso:", err);
-      alert("Não foi possível acessar o curso.");
-    }
+  if (!cursoId) {
+    alert("Curso inválido");
+    return;
   }
+
+  router.push(`/curso/${cursoId}`);
+}
+
 
   useEffect(() => {
     const token = localStorage.getItem("token");

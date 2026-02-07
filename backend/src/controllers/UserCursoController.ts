@@ -9,25 +9,23 @@ export class UserCursoController {
 
   @Get()
   async listarCursos(@Request() req) {
-    const usuarioId = req.user.sub;
-    return this.userCursoService.listarCursosDoUsuario(usuarioId);
+    return this.userCursoService.listarCursosDoUsuario(req.user.id);
   }
 
   @Get(':id')
   async detalhesCurso(@Request() req, @Param('id') cursoId: string) {
-    const usuarioId = req.user.sub;
-    return this.userCursoService.detalhesCursoDoUsuario(usuarioId, cursoId);
+    return this.userCursoService.detalhesCursoDoUsuario(req.user.id, cursoId);
   }
 
   @Post(':id/matricular')
   async matricularCurso(@Request() req, @Param('id') cursoId: string) {
-    const usuarioId = req.user.sub;
-    return this.userCursoService.adicionarCursoAoUsuario(usuarioId, cursoId);
+    return this.userCursoService.adicionarCursoAoUsuario(req.user.id, cursoId);
   }
 
   @Delete(':id/cancelar')
   async cancelarCurso(@Request() req, @Param('id') cursoId: string) {
-    const usuarioId = req.user.sub;
-    return this.userCursoService.removerCursoDoUsuario(usuarioId, cursoId);
+    return this.userCursoService.removerCursoDoUsuario(req.user.id, cursoId);
   }
 }
+
+

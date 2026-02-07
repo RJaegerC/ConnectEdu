@@ -50,32 +50,25 @@ export class UserCursoService {
    * @param cursoId 
    */
   async detalhesCursoDoUsuario(usuarioId: string, cursoId: string) {
- 
-  const userCurso = await this.userCursoRepo.findOneByUserCurso(usuarioId, cursoId);
+  console.log('--- DETALHES CURSO ---');
+  console.log('usuarioId:', usuarioId);
+  console.log('cursoId:', cursoId);
+
+  const userCurso = await this.userCursoRepo.findOneByUserCurso(
+    usuarioId,
+    cursoId,
+  );
+
+  console.log('userCurso encontrado:', userCurso);
 
   if (!userCurso) {
     throw new UnauthorizedException('Você não tem acesso a este curso');
   }
 
-  const curso = userCurso.curso;
-  if (!curso) throw new NotFoundException('Curso não encontrado');
-
   return {
-    id: curso.id,
-    nome: curso.nome,
-    descricao: curso.descricao,
-    professor: {
-      id: curso.professor?.id,
-      nome: curso.professor?.nome,
-      email: curso.professor?.email,
-    },
-    atividades: curso.atividades?.map((a) => ({
-      id: a.id,
-      titulo: a.titulo,
-      descricao: a.descricao,
-      dataEntrega: a.data_entrega,
-      arquivo: a.arquivo,
-    })),
+    id: userCurso.curso.id,
+    nome: userCurso.curso.nome,
+    descricao: userCurso.curso.descricao,
   };
 }
 

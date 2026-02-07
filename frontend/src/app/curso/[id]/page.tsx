@@ -29,17 +29,19 @@ export default function UserCursoPage({ params }: { params: { id: string } }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      router.push("/login");
-      return;
-    }
+  if (!id) return; 
 
-    getUserCursoById(id, token)
-      .then((data) => setCurso(data))
-      .catch(() => router.push("/perfil"))
-      .finally(() => setLoading(false));
-  }, [id, router]);
+  const token = localStorage.getItem("token");
+  if (!token) {
+    router.push("/login");
+    return;
+  }
+
+  getUserCursoById(id, token)
+    .then(setCurso)
+    .catch(() => router.push("/perfil"))
+    .finally(() => setLoading(false));
+}, [id, router]);
 
   if (loading) return <p>Carregando curso...</p>;
   if (!curso) return <p>Curso não encontrado.</p>;

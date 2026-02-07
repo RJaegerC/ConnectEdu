@@ -33,9 +33,14 @@ export class UserCursoRepository {
   }
 
   async findOneByUserCurso(usuarioId: string, cursoId: string) {
-    return this.repo.findOne({
-      where: { usuarioId, cursoId },
-      relations: ['curso', 'curso.professor', 'curso.atividades'],
-    });
-  }
+  return this.repo
+    .createQueryBuilder('uc')
+    .leftJoinAndSelect('uc.curso', 'curso')
+    .leftJoinAndSelect('curso.professor', 'professor')
+    .leftJoinAndSelect('curso.atividades', 'atividades')
+    .where('uc.usuarioId = :usuarioId', { usuarioId })
+    .andWhere('uc.cursoId = :cursoId', { cursoId })
+    .getOne();
+}
+
 }
