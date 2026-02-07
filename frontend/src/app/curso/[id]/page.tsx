@@ -2,8 +2,8 @@
 
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import styles from "../curso.module.css"; 
-import { getUserCursoById } from "../curso.api"; 
+import styles from "../curso.module.css";
+import { getUserCursoById } from "../curso.api";
 
 interface Atividade {
   id: string;
@@ -19,34 +19,52 @@ interface Curso {
   atividades: Atividade[];
 }
 
+const CURSO_FALLBACK: Curso = {
+  id: "temp",
+  nome: "Curso",
+  professorNome: "Professor",
+  atividades: [],
+};
+
 export default function UserCursoPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const { id } = params;
-  const [curso, setCurso] = useState<Curso | null>(null);
+
+  const [curso, setCurso] = useState<Curso>(CURSO_FALLBACK);
+
   const [tab, setTab] = useState("atividades");
   const [currentPage, setCurrentPage] = useState(1);
   const activitiesPerPage = 3;
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  if (!id) return; 
+    if (!id) return;
 
-  const token = localStorage.getItem("token");
-  if (!token) {
-    router.push("/login");
-    return;
-  }
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
 
-  getUserCursoById(id, token)
-    .then(setCurso)
-    .catch(() => router.push("/perfil"))
-    .finally(() => setLoading(false));
-}, [id, router]);
+    getUserCursoById(id, token)
+      .then((data) => {
+        if (!data) return;
 
-  if (loading) return <p>Carregando curso...</p>;
-  if (!curso) return <p>Curso não encontrado.</p>;
+        setCurso({
+          id: data.id ?? "temp",
+          nome: data.nome ?? "Curso",
+          professorNome: data.professorNome ?? "Professor",
+          atividades: data.atividades ?? [],
+        });
+      })
+      .catch(() => {
+      });
+  }, [id, router]);
 
-  const totalPages = Math.ceil(curso.atividades.length / activitiesPerPage);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(curso.atividades.length / activitiesPerPage)
+  );
+
   const startIndex = (currentPage - 1) * activitiesPerPage;
   const currentActivities = curso.atividades.slice(
     startIndex,
@@ -54,7 +72,9 @@ export default function UserCursoPage({ params }: { params: { id: string } }) {
   );
 
   const goToPage = (page: number) => {
-    if (page >= 1 && page <= totalPages) setCurrentPage(page);
+    if (page >= 1 && page <= totalPages) {
+      setCurrentPage(page);
+    }
   };
 
   return (
@@ -112,14 +132,20 @@ export default function UserCursoPage({ params }: { params: { id: string } }) {
                   <h3>{act.titulo}</h3>
                   <span className={styles.deadline}>
                     {act.dataentrega
-                      ? `Entrega até ${new Date(act.dataentrega).toLocaleDateString()}`
+                      ? `Entrega até ${new Date(
+                          act.dataentrega
+                        ).toLocaleDateString()}`
                       : "Sem prazo definido"}
                   </span>
                 </header>
+
                 <p>{act.descricao}</p>
+
                 <div className={styles.upload}>
                   <input type="file" accept=".pdf" />
-                  <button className={styles.send}>Enviar atividade</button>
+                  <button className={styles.send}>
+                    Enviar atividade
+                  </button>
                 </div>
               </div>
             ))}
@@ -157,7 +183,9 @@ export default function UserCursoPage({ params }: { params: { id: string } }) {
         )}
 
         {tab === "avisos" && (
-          <div className={styles.notice}>📢 Nenhum aviso no momento.</div>
+          <div className={styles.notice}>
+            📢 Nenhum aviso no momento.
+          </div>
         )}
       </main>
     </div>
