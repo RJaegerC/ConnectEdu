@@ -1,72 +1,70 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import styles from "../curso.module.css";
-import { getUserCursoById } from "../curso.api";
 
 interface Atividade {
-  id: string;
-  titulo: string;
-  descricao: string;
-  dataentrega: string | null;
+  title: string;
+  deadline: string;
+  description: string;
 }
 
-interface Curso {
-  id: string;
-  nome: string;
-  professorNome: string;
-  atividades: Atividade[];
-}
-
-const CURSO_FALLBACK: Curso = {
-  id: "temp",
-  nome: "Curso",
-  professorNome: "Professor",
-  atividades: [],
-};
-
-export default function UserCursoPage({ params }: { params: { id: string } }) {
+export default function UserCursoPage() {
   const router = useRouter();
-  const { id } = params;
-
-  const [curso, setCurso] = useState<Curso>(CURSO_FALLBACK);
 
   const [tab, setTab] = useState("atividades");
   const [currentPage, setCurrentPage] = useState(1);
   const activitiesPerPage = 3;
 
+  // Proteção por token e auth
   useEffect(() => {
-    if (!id) return;
-
     const token = localStorage.getItem("token");
     if (!token) {
       router.push("/login");
-      return;
     }
+  }, [router]);
 
-    getUserCursoById(id, token)
-      .then((data) => {
-        if (!data) return;
-
-        setCurso({
-          id: data.id ?? "temp",
-          nome: data.nome ?? "Curso",
-          professorNome: data.professorNome ?? "Professor",
-          atividades: data.atividades ?? [],
-        });
-      })
-      .catch(() => {
-      });
-  }, [id, router]);
+  const activities: Atividade[] = [
+  {
+    title: "Atividade 1 – Lógica de Programação",
+    deadline: "Entrega até 20/03",
+    description:
+      "Resolva uma lista de exercícios envolvendo estruturas condicionais, laços de repetição e raciocínio lógico. Envie um PDF com as resoluções comentadas.",
+  },
+  {
+    title: "Atividade 2 – Estrutura de Dados",
+    deadline: "Entrega até 27/03",
+    description:
+      "Implemente exemplos de listas, pilhas ou filas e explique o funcionamento de cada estrutura. Envie um PDF com código e explicação.",
+  },
+  {
+    title: "Atividade 3 – Banco de Dados SQL",
+    deadline: "Entrega até 03/04",
+    description:
+      "Crie um modelo simples de banco de dados e escreva consultas SQL utilizando SELECT, INSERT, UPDATE e DELETE. Envie um PDF com as queries.",
+  },
+  {
+    title: "Atividade 4 – Estrutura de Dados Avançada",
+    deadline: "Entrega até 10/04",
+    description:
+      "Explique e implemente uma árvore ou tabela hash, demonstrando operações básicas como inserção e busca.",
+  },
+  {
+    title: "Atividade 5 – Projeto Integrador",
+    deadline: "Entrega até 17/04",
+    description:
+      "Desenvolva um pequeno sistema que utilize lógica de programação, estrutura de dados e banco de dados SQL. Envie um PDF com a explicação do projeto.",
+  },
+];
 
   const totalPages = Math.max(
     1,
-    Math.ceil(curso.atividades.length / activitiesPerPage)
+    Math.ceil(activities.length / activitiesPerPage)
   );
 
   const startIndex = (currentPage - 1) * activitiesPerPage;
-  const currentActivities = curso.atividades.slice(
+  const currentActivities = activities.slice(
     startIndex,
     startIndex + activitiesPerPage
   );
@@ -80,8 +78,7 @@ export default function UserCursoPage({ params }: { params: { id: string } }) {
   return (
     <div className={styles.container}>
       <section className={styles.banner}>
-        <h1>{curso.nome}</h1>
-        <p>Professor: {curso.professorNome}</p>
+        <h1>Curso</h1>
 
         <div className={styles.progress}>
           <span>Progresso do curso</span>
@@ -115,31 +112,31 @@ export default function UserCursoPage({ params }: { params: { id: string } }) {
       <main className={styles.main}>
         {tab === "conteudo" && (
           <ul className={styles.list}>
-            {curso.atividades.map((a, i) => (
-              <li key={a.id}>
-                <span>📘 Atividade {i + 1}</span>
-                <small>{a.titulo}</small>
-              </li>
-            ))}
+            <li>
+              <span>📘 Aula 1</span>
+              <small>Introdução</small>
+            </li>
+            <li>
+              <span>📘 Aula 2</span>
+              <small>HTML & CSS</small>
+            </li>
+            <li>
+              <span>📘 Aula 3</span>
+              <small>JavaScript</small>
+            </li>
           </ul>
         )}
 
         {tab === "atividades" && (
           <div className={styles.activityPagination}>
-            {currentActivities.map((act) => (
-              <div key={act.id} className={styles.activity}>
+            {currentActivities.map((act, idx) => (
+              <div key={idx} className={styles.activity}>
                 <header className={styles.activityHeader}>
-                  <h3>{act.titulo}</h3>
-                  <span className={styles.deadline}>
-                    {act.dataentrega
-                      ? `Entrega até ${new Date(
-                          act.dataentrega
-                        ).toLocaleDateString()}`
-                      : "Sem prazo definido"}
-                  </span>
+                  <h3>{act.title}</h3>
+                  <span className={styles.deadline}>{act.deadline}</span>
                 </header>
 
-                <p>{act.descricao}</p>
+                <p>{act.description}</p>
 
                 <div className={styles.upload}>
                   <input type="file" accept=".pdf" />
